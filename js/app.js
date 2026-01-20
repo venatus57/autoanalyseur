@@ -44,16 +44,19 @@ const App = {
             if (data.modele) document.getElementById('modele').value = data.modele;
             if (data.description) document.getElementById('description').value = data.description;
 
-            // Charger les photos depuis leurs URLs
-            if (data.photos && data.photos.length > 0) {
-                this.loadPhotosFromUrls(data.photos);
-            }
+            // Stocker l'URL source pour affichage
+            this.sourceUrl = data.sourceUrl;
+            this.sourcePhotosCount = data.photos?.length || 0;
 
-            // Afficher un message de succès
+            // Afficher un message de succès avec lien vers l'annonce
             const hint = document.getElementById('extractHint');
             if (hint) {
                 hint.style.display = 'block';
-                hint.textContent = `✅ Données importées depuis Leboncoin (${data.photos?.length || 0} photos)`;
+                if (this.sourceUrl) {
+                    hint.innerHTML = `✅ Données importées ! <a href="${this.sourceUrl}" target="_blank" style="color: #818cf8;">Voir l'annonce (${this.sourcePhotosCount} photos)</a>`;
+                } else {
+                    hint.textContent = `✅ Données importées depuis Leboncoin`;
+                }
                 hint.style.color = '#22c55e';
             }
 
