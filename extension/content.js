@@ -148,47 +148,44 @@ const LeboncoinExtractor = {
 
     extractPhotos() {
         const photos = [];
+
+        // Méthode 1: Extraire depuis __NEXT_DATA__ (le plus fiable)
+        try {
+            const nextDataScript = document.getElementById('__NEXT_DATA__');
+            if (nextDataScript) {
+                const data = JSON.parse(nextDataScript.textContent);
+                const ad = data?.props?.pageProps?.ad;
+
+                if (ad?.images?.urls_large) {
+                    console.log('📸 Photos trouvées via __NEXT_DATA__:', ad.images.urls_large.length);
+                    return ad.images.urls_large;
+                } else if (ad?.images?.urls) {
+                    console.log('📸 Photos trouvées via __NEXT_DATA__ (urls):', ad.images.urls.length);
+                    return ad.images.urls;
+                }
+            }
+        } catch (e) {
+            console.log('Erreur extraction __NEXT_DATA__:', e);
+        }
+
+        // Méthode 2: Fallback - chercher les images dans le DOM
         const seenUrls = new Set();
-
-        // Chercher toutes les images de la galerie
-        const allImages = document.querySelectorAll('img');
-
-        allImages.forEach(img => {
+        document.querySelectorAll('picture img, div.slick-slide img').forEach(img => {
             let url = img.src || '';
 
-            // Filtrer : garder seulement les images Leboncoin de taille correcte
             if (url &&
-                url.includes('leboncoin') &&
-                !url.includes('logo') &&
-                !url.includes('avatar') &&
-                !url.includes('icon') &&
-                !url.includes('sprite') &&
-                img.naturalWidth > 100 &&
+                url.includes('img.leboncoin.fr') &&
                 !seenUrls.has(url)) {
 
-                // Essayer d'obtenir la version haute résolution
-                // Leboncoin utilise souvent des URLs avec des paramètres de taille
-                url = url.replace(/\/thumbs\//, '/images/')
-                    .replace(/_thumb/, '')
-                    .replace(/\?.*$/, ''); // Enlever query params
-
+                // Convertir en haute définition
+                url = url.replace(/rule=ad-thumb/, 'rule=ad-large');
                 seenUrls.add(url);
                 photos.push(url);
             }
         });
 
-        // Si pas de photos trouvées, chercher dans les data-src ou srcset
-        if (photos.length === 0) {
-            document.querySelectorAll('img[data-src], img[srcset]').forEach(img => {
-                const url = img.getAttribute('data-src') || img.srcset?.split(' ')[0];
-                if (url && url.includes('leboncoin') && !seenUrls.has(url)) {
-                    seenUrls.add(url);
-                    photos.push(url);
-                }
-            });
-        }
-
-        return photos.slice(0, 10); // Max 10 photos
+        console.log('📸 Photos trouvées via DOM:', photos.length);
+        return photos.slice(0, 10);
     },
 
     /**
