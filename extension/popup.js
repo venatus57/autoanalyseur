@@ -112,16 +112,10 @@ function openAnalyser(data) {
 
     const encodedData = btoa(unescape(encodeURIComponent(jsonData)));
 
-    // Ouvrir l'app AutoAnalyseur avec les données
-    // Note: adaptez le chemin selon votre configuration
-    const analyserUrl = chrome.runtime.getURL('../index.html') + '?data=' + encodedData;
+    // URL GitHub Pages
+    const analyserUrl = 'https://venatus57.github.io/autoanalyseur/?data=' + encodedData;
 
-    // Fallback: ouvrir en fichier local (l'utilisateur doit configurer)
-    // Pour une extension locale, on utilise le stockage
-    chrome.storage.local.set({ pendingAnalysis: data }, () => {
-        // Essayer d'ouvrir index.html depuis le dossier parent
-        chrome.tabs.create({
-            url: analyserUrl
-        });
-    });
+    // Ouvrir l'app AutoAnalyseur hébergée sur GitHub Pages
+    chrome.tabs.create({ url: analyserUrl });
 }
+
