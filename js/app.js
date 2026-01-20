@@ -48,12 +48,17 @@ const App = {
             this.sourceUrl = data.sourceUrl;
             this.sourcePhotosCount = data.photos?.length || 0;
 
+            // Charger les photos via le proxy CORS
+            if (data.photos && data.photos.length > 0) {
+                this.loadPhotosFromUrls(data.photos);
+            }
+
             // Afficher un message de succès avec lien vers l'annonce
             const hint = document.getElementById('extractHint');
             if (hint) {
                 hint.style.display = 'block';
                 if (this.sourceUrl) {
-                    hint.innerHTML = `✅ Données importées ! <a href="${this.sourceUrl}" target="_blank" style="color: #818cf8;">Voir l'annonce (${this.sourcePhotosCount} photos)</a>`;
+                    hint.innerHTML = `✅ Données importées ! <a href="${this.sourceUrl}" target="_blank" style="color: #818cf8;">Voir l'annonce originale</a>`;
                 } else {
                     hint.textContent = `✅ Données importées depuis Leboncoin`;
                 }
@@ -70,19 +75,27 @@ const App = {
 
     /**
      * Charge les photos depuis leurs URLs (depuis l'extension)
+     * Utilise un proxy CORS pour contourner les restrictions Leboncoin
      */
     loadPhotosFromUrls: function (urls) {
+        // Proxy CORS gratuit pour charger les images
+        const corsProxy = 'https://corsproxy.io/?';
+
         urls.forEach((url, index) => {
-            // Créer une entrée photo avec l'URL directe
+            // Ajouter le proxy devant l'URL pour contourner CORS
+            const proxiedUrl = corsProxy + encodeURIComponent(url);
+
             this.photos.push({
                 id: Date.now() + index,
-                src: url,
+                src: proxiedUrl,
+                originalSrc: url,
                 name: `Photo ${index + 1} (Leboncoin)`,
                 isExternal: true
             });
         });
         this.renderPhotos();
     },
+
 
 
     bindEvents: function () {
