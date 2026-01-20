@@ -75,20 +75,12 @@ const App = {
 
     /**
      * Charge les photos depuis leurs URLs (depuis l'extension)
-     * Utilise un proxy CORS pour contourner les restrictions Leboncoin
      */
     loadPhotosFromUrls: function (urls) {
-        // Proxy CORS gratuit pour charger les images
-        const corsProxy = 'https://corsproxy.io/?';
-
         urls.forEach((url, index) => {
-            // Ajouter le proxy devant l'URL pour contourner CORS
-            const proxiedUrl = corsProxy + encodeURIComponent(url);
-
             this.photos.push({
                 id: Date.now() + index,
-                src: proxiedUrl,
-                originalSrc: url,
+                src: url, // Essayer l'URL directe d'abord
                 name: `Photo ${index + 1} (Leboncoin)`,
                 isExternal: true
             });
