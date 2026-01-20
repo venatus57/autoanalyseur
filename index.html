@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoAnalyseur | Analyse d'annonces auto</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🚗</span>
+                <h1>Auto<span class="highlight">Analyseur</span></h1>
+            </div>
+            <p class="tagline">Analysez une annonce en 30 secondes</p>
+        </header>
+
+        <main class="main-content">
+            <!-- ÉTAPE 1 : Coller l'annonce -->
+            <section class="step-section">
+                <div class="step-header">
+                    <span class="step-number">1</span>
+                    <h2>Collez l'annonce</h2>
+                    <button type="button" id="btnAutoFill" class="btn-auto"
+                        title="Extraire automatiquement les infos">🔄 Auto-remplir</button>
+                </div>
+                <textarea id="description" rows="6"
+                    placeholder="Copiez-collez ici le texte de l'annonce Leboncoin..."></textarea>
+                <p class="hint" id="extractHint" style="display:none;">✅ Données extraites automatiquement !</p>
+            </section>
+
+            <!-- ÉTAPE 2 : Infos rapides -->
+            <section class="step-section">
+                <div class="step-header">
+                    <span class="step-number">2</span>
+                    <h2>Infos véhicule <small>(auto-rempli si possible)</small></h2>
+                </div>
+                <div class="quick-inputs">
+                    <div class="input-group">
+                        <label>Prix (€)</label>
+                        <input type="number" id="prix" placeholder="15000">
+                    </div>
+                    <div class="input-group">
+                        <label>Km</label>
+                        <input type="number" id="kilometrage" placeholder="85000">
+                    </div>
+                    <div class="input-group">
+                        <label>Année</label>
+                        <input type="number" id="annee" placeholder="2018">
+                    </div>
+                    <div class="input-group">
+                        <label>Marque</label>
+                        <input type="text" id="marque" placeholder="VW">
+                    </div>
+                    <div class="input-group">
+                        <label>Modèle</label>
+                        <input type="text" id="modele" placeholder="Golf">
+                    </div>
+                </div>
+            </section>
+
+            <!-- ÉTAPE 3 : Budget -->
+            <section class="step-section budget-section">
+                <div class="step-header">
+                    <span class="step-number">3</span>
+                    <h2>Mon budget <small>(optionnel)</small></h2>
+                </div>
+                <div class="budget-inputs">
+                    <div class="input-group">
+                        <label>Budget mensuel max (€/mois)</label>
+                        <input type="number" id="budgetMensuel" placeholder="300">
+                    </div>
+                    <div class="input-group">
+                        <label>ou Budget total achat (€)</label>
+                        <input type="number" id="budgetTotal" placeholder="20000">
+                    </div>
+                    <div class="input-group">
+                        <label>Durée crédit (mois)</label>
+                        <input type="number" id="dureCredit" placeholder="48" value="48">
+                    </div>
+                </div>
+                <p class="hint">Inclut estimation : carburant, assurance, entretien</p>
+            </section>
+
+            <!-- ÉTAPE 4 : Photos -->
+            <section class="step-section">
+                <div class="step-header">
+                    <span class="step-number">4</span>
+                    <h2>Photos <small>(optionnel)</small></h2>
+                </div>
+                <div class="photo-upload-area" id="photoUploadArea">
+                    <input type="file" id="photoInput" multiple accept="image/*" hidden>
+                    <div class="upload-prompt" id="uploadPrompt">
+                        <span class="upload-icon">📸</span>
+                        <p>Glissez-déposez les photos ici<br>ou <button type="button" class="link-btn"
+                                onclick="document.getElementById('photoInput').click()">cliquez pour
+                                sélectionner</button></p>
+                    </div>
+                    <div class="photo-grid" id="photoGrid"></div>
+                </div>
+            </section>
+
+            <!-- Boutons d'action -->
+            <div class="action-buttons">
+                <button type="button" id="btnExemple" class="btn btn-secondary">Charger un exemple</button>
+                <button type="button" id="btnAnalyser" class="btn btn-primary">
+                    <span>🔍 Analyser</span>
+                </button>
+            </div>
+
+            <!-- Loader -->
+            <div id="loader" class="loader" style="display: none;">
+                <div class="loader-spinner"></div>
+                <p>Analyse en cours...</p>
+            </div>
+
+            <!-- Résultats -->
+            <section id="resultats" class="resultats-section"></section>
+        </main>
+
+        <footer class="footer">
+            <p>⚠️ Analyse indicative uniquement. Toujours faire vérifier par un professionnel.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data/modifications.js"></script>
+    <script src="js/data/rules.js"></script>
+    <script src="js/data/vehicleDatabase.js"></script>
+    <script src="js/data/marketPrices.js"></script>
+    <script src="js/modules/generalAnalysis.js"></script>
+    <script src="js/modules/modificationAnalysis.js"></script>
+    <script src="js/modules/photoAnalysis.js"></script>
+    <script src="js/modules/scoringEngine.js"></script>
+    <script src="js/modules/reportGenerator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

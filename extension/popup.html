@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoAnalyseur</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <header class="popup-header">
+            <span class="logo-icon">🚗</span>
+            <h1>Auto<span class="highlight">Analyseur</span></h1>
+        </header>
+
+        <div id="status" class="status">
+            <p class="status-text">Détection de l'annonce...</p>
+        </div>
+
+        <div id="data-preview" class="data-preview" style="display: none;">
+            <div class="preview-row">
+                <span class="label">Titre</span>
+                <span class="value" id="preview-titre">-</span>
+            </div>
+            <div class="preview-row">
+                <span class="label">Prix</span>
+                <span class="value" id="preview-prix">-</span>
+            </div>
+            <div class="preview-row">
+                <span class="label">Km</span>
+                <span class="value" id="preview-km">-</span>
+            </div>
+            <div class="preview-row">
+                <span class="label">Année</span>
+                <span class="value" id="preview-annee">-</span>
+            </div>
+            <div class="preview-row">
+                <span class="label">Photos</span>
+                <span class="value" id="preview-photos">-</span>
+            </div>
+        </div>
+
+        <div id="photo-thumbs" class="photo-thumbs"></div>
+
+        <div class="actions">
+            <button id="btn-analyse" class="btn btn-primary" disabled>
+                📊 Analyser cette annonce
+            </button>
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            <p id="error-text"></p>
+        </div>
+
+        <footer class="popup-footer">
+            <p>Visitez une annonce voiture sur Leboncoin</p>
+        </footer>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
